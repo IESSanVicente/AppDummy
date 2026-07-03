@@ -22,3 +22,7 @@ activityCompose = "1.13.0"
 kotlin = "2.4.0"
 composeBom = "2026.06.01"
 ```
+
+## Versiones
+
+- **v1.** Pantalla de bienvenida y dependencia de Material Icons Extended añadida.
