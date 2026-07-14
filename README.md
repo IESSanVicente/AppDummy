@@ -25,4 +25,5 @@ composeBom = "2026.06.01"
 
 ## Versiones
 
+- **v0.** Proyecto inicial con la estructura de carpetas y archivos base.
 - **v1.** Pantalla de bienvenida y dependencia de Material Icons Extended añadida.
