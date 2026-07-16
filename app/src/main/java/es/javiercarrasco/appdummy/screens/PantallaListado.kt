@@ -23,7 +23,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import es.javiercarrasco.appdummy.R
 
-// ─── screens/PantallaListado.kt ───────────────────────────────────────────────────────────────
+// ─── screens/PantallaListado.kt ──────────────────────────────────────────────────────────────────
 
 // Modelo de datos simple (será reemplazado por data class real en B2)
 data class LibroUI(

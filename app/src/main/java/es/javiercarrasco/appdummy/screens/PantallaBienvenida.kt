@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-// ─── PantallaBienvenida.kt ───────────────────────────────────────────────────────────────────────
+// ─── screens/PantallaBienvenida.kt ───────────────────────────────────────────────────────────────
 @Composable
 fun PantallaBienvenida(onEntrar: () -> Unit) {
     var nombreUsuario by remember { mutableStateOf("") }

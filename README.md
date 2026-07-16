@@ -33,3 +33,6 @@ composeBom = "2026.06.01"
   - Se añade el permiso de acceso a Internet en el archivo `AndroidManifest.xml`.
   - Se añade imagen `nocover.jpg` para libros sin portada en la carpeta `res/drawable`.
   - Se mueve la pantalla de bienvenida a la carpeta `screens`.
+- **v3.** Pantalla de gestión de permisos.
+  - Se añade la pantalla de gestión de permisos en la carpeta `screens`.
+  - Se añade el permiso de acceso a la cámara y características hardware en el archivo `AndroidManifest.xml`.
