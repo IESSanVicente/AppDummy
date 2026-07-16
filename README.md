@@ -27,3 +27,9 @@ composeBom = "2026.06.01"
 
 - **v0.** Proyecto inicial con la estructura de carpetas y archivos base.
 - **v1.** Pantalla de bienvenida y dependencia de Material Icons Extended añadida.
+- **v2.** Pantalla de listado de libros con filtros y funciones de marcado como leído y favorito añadido.
+  - Se añade la dependencia Coil (`io.coil-kt.coil3:coil-compose:3.5.0`) para la carga de imágenes.
+  - También se añade la dependencia Coil Network OkHttp (`io.coil-kt.coil3:coil-network-okhttp:3.5.0`) para la carga de imágenes desde la red.
+  - Se añade el permiso de acceso a Internet en el archivo `AndroidManifest.xml`.
+  - Se añade imagen `nocover.jpg` para libros sin portada en la carpeta `res/drawable`.
+  - Se mueve la pantalla de bienvenida a la carpeta `screens`.
