@@ -36,3 +36,12 @@ composeBom = "2026.06.01"
 - **v3.** Pantalla de gestión de permisos.
   - Se añade la pantalla de gestión de permisos en la carpeta `screens`.
   - Se añade el permiso de acceso a la cámara y características hardware en el archivo `AndroidManifest.xml`.
+- **v4.** MVVM y ViewModel
+  - Se añaden las dependencias necesarias para realizar el bloque 2 (ViewModel, Lifecycle, Corrutinas y Testing).
+  - Se añade la clase `LibrosViewModel` para gestionar el estado de la pantalla de listado de libros.
+  - Se crea la clase `Libro` para representar los datos de cada libro, sustituyendo la versión anterior, `LibroUI`.
+  - Se crea la clase `LibrosUiState` para representar los posibles estados de la pantalla de listado de libros.
+  - Se crea la clase `RepositorioLibros` para simular la obtención de datos de libros desde un repositorio.
+  - Se modifica la pantalla de listado de libros para que utilice el `ViewModel` y el estado de la pantalla se gestione a través de `LibrosUiState`.
+  - Se añade un evento de un solo disparo para mostrar un Snackbar al marcar favoritos y libros leídos.
+  - Se añade la clase `LibrosViewModelTest` para realizar pruebas unitarias del `ViewModel`.
