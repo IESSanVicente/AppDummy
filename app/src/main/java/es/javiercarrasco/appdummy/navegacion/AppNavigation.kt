@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import es.javiercarrasco.appdummy.screens.detalle.PantallaDetalle
+import es.javiercarrasco.appdummy.screens.favoritos.PantallaFavoritos
 import es.javiercarrasco.appdummy.screens.listado.PantallaListado
 
 // ─── navegacion/AppNavigation.kt ─────────────────────────────────────────────────────────────────
@@ -18,9 +19,7 @@ fun AppNavigation(
     navController: NavHostController = rememberNavController()
 ) {
     Scaffold(
-        bottomBar = {
-            AppDummyBottomBar(navController = navController)
-        }
+        bottomBar = { AppDummyBottomBar(navController = navController) }
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -44,13 +43,13 @@ fun AppNavigation(
                 )
             }
 
-//            composable<Favoritos> {
-//                PantallaFavoritos(
-//                    onNavegaADetalle = { id ->
-//                        navController.navigate(Detalle(id = id))
-//                    }
-//                )
-//            }
+            composable<Favoritos> {
+                PantallaFavoritos(
+                    onNavegaADetalle = { id ->
+                        navController.navigate(Detalle(id = id))
+                    }
+                )
+            }
         }
     }
 }

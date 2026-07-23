@@ -49,5 +49,5 @@ composeBom = "2026.06.01"
 - **v5.** Navegación y pantalla de detalle de libro.
   - Se añaden las dependencias necesarias para realizar el bloque 3 (Navegación).
   - Se añade la navegación entre pantallas y la pantalla de detalle de libro.
-  - Se crea navegación entre pantallas utilizando `NavigationBar`.
+  - Se crea navegación entre pantallas utilizando `NavigationBar` utilizando `NavHost` y `NavController`.
   

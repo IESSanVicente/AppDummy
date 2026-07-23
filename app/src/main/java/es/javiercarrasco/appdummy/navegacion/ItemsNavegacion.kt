@@ -2,6 +2,7 @@ package es.javiercarrasco.appdummy.navegacion
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Book
 import androidx.compose.ui.graphics.vector.ImageVector
 
 // ─── navegacion/ItemsNavegacion.kt ───────────────────────────────────────────────────────────────
@@ -17,7 +18,7 @@ val itemsNavegacionPrincipal = listOf(
     ItemNavegacion(
         etiqueta = "Catálogo",
         ruta = Listado, // <- Ruta de Navegación a la pantalla listado.
-        icono = Icons.Default.Book,
+        icono = Icons.Outlined.Book,
         iconoSeleccionado = Icons.Filled.Book
     ),
     ItemNavegacion(
@@ -25,11 +26,5 @@ val itemsNavegacionPrincipal = listOf(
         ruta = Favoritos,
         icono = Icons.Default.FavoriteBorder,
         iconoSeleccionado = Icons.Filled.Favorite
-    ),
-    ItemNavegacion(
-        etiqueta = "Leídos",
-        ruta = Leidos,
-        icono = Icons.Default.BookmarkBorder,
-        iconoSeleccionado = Icons.Filled.Bookmarks
     )
 )
