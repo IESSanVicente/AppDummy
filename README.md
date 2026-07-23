@@ -46,3 +46,7 @@ composeBom = "2026.06.01"
   - Se añade un evento de un solo disparo para mostrar un Snackbar al marcar favoritos y libros leídos.
   - Se añade la clase `LibrosViewModelTest` para realizar pruebas unitarias del `ViewModel`.
   - Modificación de la clase `MainActivity` para lanzar la pantalla listado, pero se mantiene el método _preview_ para lanzar directamente la pantalla listado.
+- **v5.** Navegación y pantalla de detalle de libro.
+  - Se añaden las dependencias necesarias para realizar el bloque 3 (Navegación).
+  - Se añade la navegación entre pantallas y la pantalla de detalle de libro.
+  
