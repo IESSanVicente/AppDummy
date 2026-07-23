@@ -45,3 +45,4 @@ composeBom = "2026.06.01"
   - Se modifica la pantalla de listado de libros para que utilice el `ViewModel` y el estado de la pantalla se gestione a través de `LibrosUiState`.
   - Se añade un evento de un solo disparo para mostrar un Snackbar al marcar favoritos y libros leídos.
   - Se añade la clase `LibrosViewModelTest` para realizar pruebas unitarias del `ViewModel`.
+  - Modificación de la clase `MainActivity` para lanzar la pantalla listado, pero se mantiene el método _preview_ para lanzar directamente la pantalla listado.

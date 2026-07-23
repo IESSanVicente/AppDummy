@@ -54,6 +54,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -70,7 +71,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PantallaListado(
     viewModel: LibrosViewModel = viewModel(factory = LibrosViewModel.Factory),
-    onNavegaADetalle: (Int) -> Unit   // callback de navegación (se conecta al NavHost en T3)
+    onNavegaADetalle: (Int) -> Unit = {}  // callback de navegación (se conecta al NavHost en T3)
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -305,4 +306,10 @@ fun ItemLibro(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PantallaListadoPreview() {
+    PantallaListado()
 }
