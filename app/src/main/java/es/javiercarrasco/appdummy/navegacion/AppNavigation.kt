@@ -19,7 +19,7 @@ fun AppNavigation(
 ) {
     Scaffold(
         bottomBar = {
-//            AppDummyBottomBar(navController = navController)
+            AppDummyBottomBar(navController = navController)
         }
     ) { innerPadding ->
         NavHost(
