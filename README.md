@@ -50,4 +50,5 @@ composeBom = "2026.06.01"
   - Se añaden las dependencias necesarias para realizar el bloque 3 (Navegación).
   - Se añade la navegación entre pantallas y la pantalla de detalle de libro.
   - Se crea navegación entre pantallas utilizando `NavigationBar` utilizando `NavHost` y `NavController`.
-  
+- **v6.** Presistencia con ROOM
+  - Se añaden las dependencias necesarias para realizar el bloque 4 (ROOM).

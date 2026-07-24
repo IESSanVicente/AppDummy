@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.devtools.ksp")   // procesador de anotaciones de Room
+    id("androidx.room")             // plugin de Room para gestión de esquemas
 }
 
 android {
@@ -38,6 +40,10 @@ android {
     }
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
@@ -63,18 +69,27 @@ dependencies {
     implementation(libs.coil.network.okhttp)
 
     // ViewModel y Lifecycle
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.10.0")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // Corrutinas
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+    implementation(libs.kotlinx.coroutines.android)
 
     // Testing
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+    testImplementation(libs.kotlinx.coroutines.test)
 
     // Navigation Compose (API tipada disponible desde 2.8.0)
-    implementation("androidx.navigation:navigation-compose:2.9.8")
+    implementation(libs.androidx.navigation.compose)
 
     // Kotlin Serialization — imprescindible para las rutas @Serializable
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+    implementation(libs.kotlinx.serialization.json)
+
+    // Room — todos los artefactos deben tener la misma versión
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)       // extensiones de corrutinas
+    ksp(libs.androidx.room.compiler)             // generador de código (KSP, NO kapt)
+
+    // Testing de Room
+    testImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.androidx.room.testing)
 }
