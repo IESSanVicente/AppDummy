@@ -92,4 +92,7 @@ dependencies {
     // Testing de Room
     testImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.room.testing)
+
+    // Gson — deserialización de JSON a objetos Kotlin/Java
+    implementation("com.google.code.gson:gson:2.14.0")
 }

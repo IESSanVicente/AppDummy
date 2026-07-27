@@ -71,7 +71,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PantallaListado(
     viewModel: LibrosViewModel = viewModel(factory = LibrosViewModel.Factory),
-    onNavegaADetalle: (Int) -> Unit = {}  // callback de navegación (se conecta al NavHost en T3)
+    onNavegaADetalle: (String) -> Unit = {}  // callback de navegación (se conecta al NavHost en T3)
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -238,8 +238,8 @@ fun PantallaListado(
 fun ItemLibro(
     libro: Libro,
     onClickItem: () -> Unit = {},
-    onToggleLeido: (Int) -> Unit = {},
-    onToggleFavorito: (Int) -> Unit = {}
+    onToggleLeido: (String) -> Unit = {},
+    onToggleFavorito: (String) -> Unit = {}
 ) {
     Card(onClick = onClickItem, modifier = Modifier.fillMaxWidth()) {
         Column(

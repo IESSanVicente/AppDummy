@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 // ─── screens/detalle/DetalleViewModel.kt ─────────────────────────────────────────────────────────
 class DetalleViewModel(
-    private val libroId: Int,
+    private val libroId: String,
     private val repository: LibrosRepository
 ) : ViewModel() {
 
@@ -33,7 +33,7 @@ class DetalleViewModel(
     }
 
     companion object {
-        fun factoryConId(id: Int): ViewModelProvider.Factory = viewModelFactory {
+        fun factoryConId(id: String): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 DetalleViewModel(
                     libroId = id,

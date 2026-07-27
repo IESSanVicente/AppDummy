@@ -9,6 +9,6 @@ data object Inicio
 @Serializable
 data object Listado
 @Serializable
-data class Detalle(val id: Int)
+data class Detalle(val id: String)
 @Serializable
 data object Favoritos

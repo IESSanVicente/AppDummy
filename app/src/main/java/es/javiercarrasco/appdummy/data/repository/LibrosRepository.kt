@@ -10,7 +10,7 @@ class LibrosRepository {
 
     private val libros = listOf(
         Libro(
-            id = 1,
+            id = "1",
             titulo = "Proyecto Hail Mary",
             autor = "Andy Weir",
             year = 2021,
@@ -20,7 +20,7 @@ class LibrosRepository {
             leido = false
         ),
         Libro(
-            id = 2,
+            id = "2",
             titulo = "Juego de tronos",
             autor = "George R.R. Martin",
             year = 1996,
@@ -29,9 +29,9 @@ class LibrosRepository {
             esFavorito = true,
             leido = true
         ),
-        Libro(3, "Festín de cuervos", "George R.R. Martin", 2005, "9780307951212", "https://covers.openlibrary.org/b/isbn/9780307951212-L.jpg", false, false),
-        Libro(4, "Cementerio de Animales", "Stephen King", 1983, "9788401499845", "https://covers.openlibrary.org/b/isbn/9788401499845-L.jpg", false, true),
-        Libro(5, "El juego de Ender", "Orson Scott Card", 1985, "9788498720068", "https://covers.openlibrary.org/b/isbn/9788498720068-L.jpg", false, true)
+        Libro("3", "Festín de cuervos", "George R.R. Martin", 2005, "9780307951212", "https://covers.openlibrary.org/b/isbn/9780307951212-L.jpg", false, false),
+        Libro("4", "Cementerio de Animales", "Stephen King", 1983, "9788401499845", "https://covers.openlibrary.org/b/isbn/9788401499845-L.jpg", false, true),
+        Libro("5", "El juego de Ender", "Orson Scott Card", 1985, "9788498720068", "https://covers.openlibrary.org/b/isbn/9788498720068-L.jpg", false, true)
     )
 
     // suspend: puede suspenderse sin bloquear el hilo principal
@@ -45,8 +45,8 @@ class LibrosRepository {
         return libros.map { it.autor }.distinct().sorted()
     }
 
-    suspend fun getLibroPorId(id: Int): Libro? {
+    suspend fun getLibroPorId(id: String): Libro? {
         kotlinx.coroutines.delay(300.milliseconds)
-        return libros.find { it.id == id }
+        return libros.find { it.id.equals(id) }
     }
 }

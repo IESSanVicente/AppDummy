@@ -35,7 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaDetalle(
-    libroId: Int,
+    libroId: String,
     onVolver: () -> Unit,
     viewModel: DetalleViewModel = viewModel(factory = DetalleViewModel.factoryConId(libroId))
 ) {
