@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BookmarkAdded
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Clear
@@ -29,11 +30,11 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SearchOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -114,6 +115,11 @@ fun PantallaListado(
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = viewModel::cargarLibros) {
+                Icon(Icons.Default.Add, contentDescription = "Añadir")
+            }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
@@ -226,7 +232,7 @@ fun PantallaListado(
                             color = MaterialTheme.colorScheme.error
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = viewModel::cargarLibros) { Text("Reintentar") }
+//                        Button(onClick = viewModel::cargarLibros) { Text("Reintentar") }
                     }
                 }
             }

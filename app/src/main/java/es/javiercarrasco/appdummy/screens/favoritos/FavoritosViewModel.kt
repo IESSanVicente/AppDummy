@@ -5,15 +5,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import es.javiercarrasco.appdummy.AppDummyApplication
 import es.javiercarrasco.appdummy.data.model.Libro
 import es.javiercarrasco.appdummy.data.repository.LibrosRepository
 import es.javiercarrasco.appdummy.screens.listado.LibrosUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -28,13 +33,27 @@ class FavoritosViewModel(
     private val repository: LibrosRepository
 ) : ViewModel() {
 
-    // Estado principal de la UI
-    private val _uiState = MutableStateFlow<LibrosUiState>(LibrosUiState.Cargando)
-    val uiState: StateFlow<LibrosUiState> = _uiState.asStateFlow()
-
     // Estado del campo de búsqueda — independiente del UiState principal
     private val _busqueda = MutableStateFlow("")
     val busqueda: StateFlow<String> = _busqueda.asStateFlow()
+
+    // Estado principal de la UI
+    // stateIn convierte el Flow frío del repositorio en un StateFlow caliente
+    // SharingStarted.WhileSubscribed(5_000): el upstream se cancela 5 segundos
+    // después de que el último suscriptor desaparezca. Esto cubre rotaciones de
+    // pantalla (< 5s) sin mantener recursos cuando la app va a segundo plano.
+    val uiState: StateFlow<LibrosUiState> =
+        repository.observarFavoritos()
+            .map<List<Libro>, LibrosUiState> {
+                cargarAutores() // cargar autores para el filtro de la UI
+                LibrosUiState.Exito(it)
+            }
+            .catch { error -> emit(LibrosUiState.Error(error.message ?: "Error")) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = LibrosUiState.Cargando
+            )
 
     // Estado del campo de búsqueda — independiente del UiState principal
     private val _autores = MutableStateFlow(listOf("Todos"))
@@ -51,37 +70,10 @@ class FavoritosViewModel(
     )
     val eventos: SharedFlow<LibrosEvento> = _eventos.asSharedFlow()
 
-    init {
-        // Se ejecuta al crear el ViewModel — carga los datos automáticamente
-        cargarLibros()
-        cargarAutores()
-    }
-
-    fun cargarLibros() {
-        // viewModelScope: corrutina ligada al ViewModel, se cancela al destruirlo
-        viewModelScope.launch {
-            _uiState.value = LibrosUiState.Cargando
-            try {
-                val libros = repository.getLibros().filter { it.esFavorito } // Filtra solo los libros favoritos
-                _uiState.value = LibrosUiState.Exito(libros)
-            } catch (e: Exception) {
-                _uiState.value = LibrosUiState.Error(
-                    e.message ?: "Error desconocido al cargar los libros"
-                )
-            }
-        }
-    }
-
     fun cargarAutores() {
         viewModelScope.launch {
-            try {
-                val autores = repository.getAutores()
-                _autores.value = listOf("Todos") + autores
-            } catch (e: Exception) {
-                _uiState.value = LibrosUiState.Error(
-                    e.message ?: "Error desconocido al cargar los autores"
-                )
-            }
+            val autores = repository.obtenerAutores() ?: emptyList()
+            _autores.value = listOf("Todos") + autores
         }
     }
 
@@ -90,14 +82,11 @@ class FavoritosViewModel(
     }
 
     fun toggleFavorito(libro: Libro) {
-        _uiState.update { estado ->
-            if (estado is LibrosUiState.Exito) {
-                estado.copy(libros = estado.libros.map {
-                    if (it.id == libro.id) it.copy(esFavorito = !it.esFavorito) else it
-                })
-            } else estado
-        }
         viewModelScope.launch {
+            repository.toggleFavorito(libro.id)
+            // No es necesario actualizar el uiState manualmente:
+            // el Flow de Room detecta el cambio y emite la nueva lista automáticamente
+
             _eventos.emit(
                 LibrosEvento.MostrarSnackbar(
                     if (libro.esFavorito) "\"${libro.titulo}\" eliminado de favoritos"
@@ -108,14 +97,8 @@ class FavoritosViewModel(
     }
 
     fun toggleLeido(libro: Libro) {
-        _uiState.update { estado ->
-            if (estado is LibrosUiState.Exito) {
-                estado.copy(libros = estado.libros.map {
-                    if (it.id == libro.id) it.copy(leido = !it.leido) else it
-                })
-            } else estado
-        }
         viewModelScope.launch {
+            repository.toggleLeido(libro.id)
             _eventos.emit(
                 LibrosEvento.MostrarSnackbar(
                     if (libro.leido) "\"${libro.titulo}\" marcado como no leído"
@@ -132,7 +115,10 @@ class FavoritosViewModel(
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                FavoritosViewModel(LibrosRepository())
+                val app = checkNotNull(
+                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]
+                ) as AppDummyApplication
+                FavoritosViewModel(app.container.librosRepository)
             }
         }
     }

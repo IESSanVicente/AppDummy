@@ -19,7 +19,7 @@ interface LibrosDao {
     @Query("SELECT * FROM libros WHERE titulo LIKE '%' || :busqueda || '%' ORDER BY year DESC")
     fun observarPorTitulo(busqueda: String): Flow<List<Libro>>
 
-    // Observar una sola película (devuelve null si no existe)
+    // Observar un solo libro (devuelve null si no existe)
     @Query("SELECT * FROM libros WHERE id = :id")
     fun observarPorId(id: String): Flow<Libro?>
 
@@ -28,6 +28,9 @@ interface LibrosDao {
 
     @Query("SELECT * FROM libros WHERE id = :id")
     suspend fun obtenerPorId(id: String): Libro?
+
+    @Query("SELECT DISTINCT autor FROM libros ORDER BY autor ASC")
+    suspend fun obtenerAutores(): List<String>?
 
     // ─── Escritura (siempre suspend) ─────────────────────────────────────────
 
@@ -77,6 +80,10 @@ interface LibrosDao {
     // Toggle de favorito: invierte el valor booleano en la base de datos
     @Query("UPDATE libros SET es_favorito = NOT es_favorito WHERE id = :id")
     suspend fun toggleFavorito(id: String)
+
+    // Toggle de leído: invierte el valor booleano en la base de datos
+    @Query("UPDATE libros SET leido = NOT leido WHERE id = :id")
+    suspend fun toggleLeido(id: String)
 
     // @Transaction: garantiza que varias operaciones se ejecutan de forma atómica
     // Si alguna falla, todas se revierten (rollback)

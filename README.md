@@ -57,3 +57,6 @@ composeBom = "2026.06.01"
   - Se crea la clase `AppDatabase` para definir la base de datos ROOM y su configuración.
   - Se añade la clase `Converters` para definir los conversores de tipos de datos personalizados.
   - Se añade la persistencia de datos utilizando ROOM para almacenar los libros favoritos y leídos.
+  - Se modifica la clase `RepositorioLibros` para que utilice ROOM en lugar de datos simulados.
+  - Se añade la clase `AppDummyApplication` para inicializar la base de datos y el repositorio.
+  - Se modifica la clase `LibrosViewModel` para que utilice el repositorio de ROOM.

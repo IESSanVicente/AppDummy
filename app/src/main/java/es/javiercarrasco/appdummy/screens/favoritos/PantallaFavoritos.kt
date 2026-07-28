@@ -227,7 +227,7 @@ fun PantallaFavoritos(
                             color = MaterialTheme.colorScheme.error
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = viewModel::cargarLibros) { Text("Reintentar") }
+//                        Button(onClick = viewModel::cargarLibros) { Text("Reintentar") }
                     }
                 }
             }

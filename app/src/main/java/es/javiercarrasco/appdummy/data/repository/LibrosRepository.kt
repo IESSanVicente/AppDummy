@@ -1,12 +1,22 @@
 package es.javiercarrasco.appdummy.data.repository
 
+import es.javiercarrasco.appdummy.data.datasource.local.LocalDataSource
 import es.javiercarrasco.appdummy.data.model.Libro
-import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.flow.Flow
 
 // ─── data/repository/LibrosRepository.kt ─────────────────────────────────────────────────────────
-// En B3 este repositorio coordinará ROOM y Retrofit2.
-// Por ahora usa datos estáticos para centrar el aprendizaje en la arquitectura.
-class LibrosRepository {
+class LibrosRepository(private val localDataSource: LocalDataSource) {
+
+    // La UI siempre observa desde Room
+    fun observarLibros(): Flow<List<Libro>> = localDataSource.observarTodos()
+    fun observarFavoritos(): Flow<List<Libro>> = localDataSource.observarFavoritos()
+    fun observarPorId(id: String): Flow<Libro?> = localDataSource.observarPorId(id)
+
+    suspend fun toggleFavorito(id: String) = localDataSource.toggleFavorito(id)
+    suspend fun toggleLeido(id: String) = localDataSource.toggleLeido(id)
+    suspend fun insertarIgnorando(libros: List<Libro>) = localDataSource.insertarIgnorando(libros)
+    suspend fun obtenerAutores(): List<String>? = localDataSource.obtenerAutores()
+    suspend fun obtenerPorId(id: String): Libro? = localDataSource.obtenerPorId(id)
 
     private val libros = listOf(
         Libro(
@@ -34,19 +44,8 @@ class LibrosRepository {
         Libro("5", "El juego de Ender", "Orson Scott Card", 1985, "9788498720068", "https://covers.openlibrary.org/b/isbn/9788498720068-L.jpg", false, true)
     )
 
-    // suspend: puede suspenderse sin bloquear el hilo principal
-    suspend fun getLibros(): List<Libro> {
-        kotlinx.coroutines.delay(800.milliseconds)   // simula latencia de red
+    // Se modifica para hacer una carga inicial.
+    fun getLibros(): List<Libro> {
         return libros
-    }
-
-    suspend fun getAutores(): List<String> {
-        kotlinx.coroutines.delay(300.milliseconds)
-        return libros.map { it.autor }.distinct().sorted()
-    }
-
-    suspend fun getLibroPorId(id: String): Libro? {
-        kotlinx.coroutines.delay(300.milliseconds)
-        return libros.find { it.id.equals(id) }
     }
 }
