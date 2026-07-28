@@ -53,5 +53,7 @@ composeBom = "2026.06.01"
 - **v6.** Presistencia con ROOM
   - Se añaden las dependencias necesarias para realizar el bloque 4 (ROOM).
   - Modificación de la clase `Libro` para que sea una entidad de ROOM.
-  - Se crea la clase `LibroDao` para definir las operaciones de acceso a la base de datos.
+  - Se crea la interfaz `LibrosDao` para definir las operaciones de acceso a la base de datos.
+  - Se crea la clase `AppDatabase` para definir la base de datos ROOM y su configuración.
+  - Se añade la clase `Converters` para definir los conversores de tipos de datos personalizados.
   - Se añade la persistencia de datos utilizando ROOM para almacenar los libros favoritos y leídos.
