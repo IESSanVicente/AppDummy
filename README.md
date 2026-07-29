@@ -51,7 +51,7 @@ composeBom = "2026.06.01"
   - Se añade la navegación entre pantallas y la pantalla de detalle de libro.
   - Se crea navegación entre pantallas utilizando `NavigationBar` utilizando `NavHost` y `NavController`.
 - **v6.** Presistencia con ROOM
-  - Se añaden las dependencias necesarias para realizar el bloque 4 (ROOM).
+  - Se añaden las dependencias necesarias para realizar el tema 4 (ROOM).
   - Modificación de la clase `Libro` para que sea una entidad de ROOM.
   - Se crea la interfaz `LibrosDao` para definir las operaciones de acceso a la base de datos.
   - Se crea la clase `AppDatabase` para definir la base de datos ROOM y su configuración.
