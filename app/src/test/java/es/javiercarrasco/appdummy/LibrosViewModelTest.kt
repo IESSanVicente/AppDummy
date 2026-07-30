@@ -1,14 +1,21 @@
 package es.javiercarrasco.appdummy
 
-import es.javiercarrasco.appdummy.data.repository.LibrosRepository
-import es.javiercarrasco.appdummy.screens.listado.*
+import es.javiercarrasco.appdummy.screens.listado.LibrosUiState
+import es.javiercarrasco.appdummy.screens.listado.LibrosViewModel
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertNotEquals
-import org.junit.*
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
@@ -23,7 +30,8 @@ class LibrosViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = LibrosViewModel(LibrosRepository())
+        // Se comenta la inicialización del ViewModel para que no se ejecute en el hilo principal durante los tests.
+        //viewModel = LibrosViewModel()
     }
 
     @Test

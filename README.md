@@ -60,3 +60,9 @@ composeBom = "2026.06.01"
   - Se modifica la clase `RepositorioLibros` para que utilice ROOM en lugar de datos simulados.
   - Se añade la clase `AppDummyApplication` para inicializar la base de datos y el repositorio.
   - Se modifica la clase `LibrosViewModel` para que utilice el repositorio de ROOM.
+- **v7.** Retrofit2, consumo API Rest
+  - Se añaden las dependencias necesarias para realizar el tema 5 (Retrofit2).
+  - Se añaden los DTOs `LibroDTO` y `BusquedaResponseDto` para mapear la respuesta de la API REST.
+  - Se crea el objeto `OpenLibrary` para gestionar las URLs de las carátulas y el resto de constantes de la API.
+  - Se crea el mappeador `LibroMapper` para convertir los DTOs en entidades de dominio.
+  - Se añade un test unitario para el mappeador `LibroMapperTest`.

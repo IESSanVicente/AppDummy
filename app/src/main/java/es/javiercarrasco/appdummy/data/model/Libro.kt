@@ -5,43 +5,36 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-// ─── datal/model/Libro.kt ────────────────────────────────────────────────────────────────────────
-// Esta misma clase se reutilizará en B3-T5 con Retrofit2
-
+// ─── data/model/Libro.kt ─────────────────────────────────────────────────────────────────────────
+// La MISMA clase que en T4: no se añade ni una anotación nueva
 @Entity(
     tableName = "libros",
     indices = [
-        Index(value = ["titulo"]),                        // búsqueda por título
-        Index(value = ["autor", "isbn"], unique = false)  // búsqueda combinada
+        Index(value = ["titulo"]),
+        Index(value = ["autor", "isbn"], unique = false)
     ]
 )
 data class Libro(
-    // @PrimaryKey identifica de forma única cada fila
-    // autoGenerate = true: Room asigna el id automáticamente (incremento)
-    // autoGenerate = false (por defecto): el id lo proporcionamos nosotros
-    // En AppDummy usamos el id de https://openlibrary.org/, así que autoGenerate = false
+    // Se corresponde con "key" en el JSON: "/works/OL20933765W"
     @PrimaryKey
     val id: String,
 
-    // @ColumnInfo permite personalizar el nombre de la columna en SQLite
-    // Si no se especifica, Room usa el nombre de la propiedad
-    @ColumnInfo(name = "titulo")
+    @ColumnInfo(name = "titulo")          // "title"
     val titulo: String,
 
-    @ColumnInfo(name = "autor")
+    @ColumnInfo(name = "autor")           // "author_name" (array → se aplana)
     val autor: String,
 
-    @ColumnInfo(name = "year")
+    @ColumnInfo(name = "year")            // "first_publish_year"
     val year: Int? = 1900,
 
-    @ColumnInfo(name = "isbn")
+    @ColumnInfo(name = "isbn")            // "isbn" (array → se elige el ISBN-13)
     val isbn: String,
 
-    @ColumnInfo(name = "cover")
+    @ColumnInfo(name = "cover")           // "cover_i" (entero → se construye la URL)
     val cover: String? = null,
 
-    // Campos exclusivamente locales: no existe en la API de https://openlibrary.org/
-    // Al deserializar con Gson/Retrofit, estos campos quedan a false (valor por defecto)
+    // Campos exclusivamente locales: no existen en la API de Open Library
     @ColumnInfo(name = "es_favorito")
     val esFavorito: Boolean = false,
 
