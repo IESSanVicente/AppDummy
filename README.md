@@ -66,3 +66,5 @@ composeBom = "2026.06.01"
   - Se crea el objeto `OpenLibrary` para gestionar las URLs de las carátulas y el resto de constantes de la API.
   - Se crea el mappeador `LibroMapper` para convertir los DTOs en entidades de dominio.
   - Se añade un test unitario para el mappeador `LibroMapperTest`.
+  - Se crea la interfaz `OpenLibraryApiService` para definir los endpoints de la API REST.
+  - Se crea el objeto `RetrofitClient` para configurar Retrofit2 y OkHttpClient.
