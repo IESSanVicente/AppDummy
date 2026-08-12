@@ -31,9 +31,6 @@ class LibrosViewModel(
     private val repository: LibrosRepository
 ) : ViewModel() {
 
-//    private val _uiState = MutableStateFlow<LibrosUiState>(LibrosUiState.Cargando)
-//    val uiState: StateFlow<LibrosUiState> = _uiState.asStateFlow()
-
     // Estado del campo de búsqueda — independiente del UiState principal
     private val _busqueda = MutableStateFlow("")
     val busqueda: StateFlow<String> = _busqueda.asStateFlow()
@@ -70,12 +67,6 @@ class LibrosViewModel(
         extraBufferCapacity = 1
     )
     val eventos: SharedFlow<LibrosEvento> = _eventos.asSharedFlow()
-
-    fun cargarLibros() {
-        viewModelScope.launch {
-            repository.insertarIgnorando(repository.getLibros())
-        }
-    }
 
     fun cargarAutores() {
         viewModelScope.launch {

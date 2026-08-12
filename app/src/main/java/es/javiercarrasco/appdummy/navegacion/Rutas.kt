@@ -12,3 +12,5 @@ data object Listado
 data class Detalle(val id: String)
 @Serializable
 data object Favoritos
+@Serializable
+data object NuevoLibro        // ← nueva ruta de T5

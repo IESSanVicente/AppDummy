@@ -22,4 +22,8 @@ class LocalDataSource(private val dao: LibrosDao) {
     suspend fun insertarIgnorando(libros: List<Libro>) = dao.insertarIgnorando(libros)
     suspend fun obtenerAutores(): List<String>? = dao.obtenerAutores()
     suspend fun obtenerPorId(id: String): Libro? = dao.obtenerPorId(id)
+
+    // ─── data/datasource/local/LocalDataSource.kt — añadir este método ───────────────────────────────
+    // @Upsert: si el id ya existe actualiza la fila, si no la inserta
+    suspend fun guardar(libro: Libro) = dao.upsert(libro)
 }

@@ -3,10 +3,10 @@ package es.javiercarrasco.appdummy.data.di
 import android.content.Context
 import es.javiercarrasco.appdummy.data.datasource.local.AppDatabase
 import es.javiercarrasco.appdummy.data.datasource.local.LocalDataSource
+import es.javiercarrasco.appdummy.data.datasource.remote.RemoteDataSource
 import es.javiercarrasco.appdummy.data.datasource.remote.RetrofitClient
 import es.javiercarrasco.appdummy.data.repository.LibrosRepository
 import okhttp3.OkHttpClient
-import kotlin.getValue
 
 // ─── data/di/AppContainer.kt ─────────────────────────────────────────────────────────────────────
 interface AppContainer {
@@ -27,13 +27,12 @@ class DefaultAppContainer(context: Context) : AppContainer {
     // ─── Capa remota (T5) ───────────────────────────────────────────────────────
     override val okHttpClient: OkHttpClient by lazy { RetrofitClient.okHttpClient }
 
-//    private val remoteDataSource: RemoteDataSource by lazy {
-//        RemoteDataSource(RetrofitClient.openLibraryApiService)
-//    }
+    private val remoteDataSource: RemoteDataSource by lazy {
+        RemoteDataSource(RetrofitClient.openLibraryApiService)
+    }
 
     // El repositorio pasa a recibir DOS orígenes de datos
     override val librosRepository: LibrosRepository by lazy {
-//        LibrosRepository(localDataSource, remoteDataSource)
-        LibrosRepository(localDataSource)
+        LibrosRepository(localDataSource, remoteDataSource)
     }
 }

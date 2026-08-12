@@ -12,6 +12,7 @@ import androidx.navigation.toRoute
 import es.javiercarrasco.appdummy.screens.detalle.PantallaDetalle
 import es.javiercarrasco.appdummy.screens.favoritos.PantallaFavoritos
 import es.javiercarrasco.appdummy.screens.listado.PantallaListado
+import es.javiercarrasco.appdummy.screens.nuevo.PantallaNuevoLibro
 
 // ─── navegacion/AppNavigation.kt ─────────────────────────────────────────────────────────────────
 @Composable
@@ -31,7 +32,17 @@ fun AppNavigation(
                 PantallaListado(    // <- Composable de la pantalla listado.
                     onNavegaADetalle = { id ->
                         navController.navigate(Detalle(id = id))    // <- Ruta de Navegación a la pantalla detalle con el id del libro.
-                    }
+                    },
+                    // El FAB deja de recargar la lista estática y navega al formulario
+                    onNavegaANuevoLibro = { navController.navigate(NuevoLibro) }
+                )
+            }
+
+            composable<NuevoLibro> {
+                PantallaNuevoLibro(
+                    // Al guardar se vuelve al listado; Room notificará el cambio automáticamente
+                    onGuardado = { navController.navigateUp() },
+                    onCancelar = { navController.navigateUp() }
                 )
             }
 

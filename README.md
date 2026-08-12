@@ -68,3 +68,11 @@ composeBom = "2026.06.01"
   - Se añade un test unitario para el mappeador `LibroMapperTest`.
   - Se crea la interfaz `OpenLibraryApiService` para definir los endpoints de la API REST.
   - Se crea el objeto `RetrofitClient` para configurar Retrofit2 y OkHttpClient.
+  - Se crea la clase `RemoteDataSource` para gestionar la obtención de datos desde la API REST.
+  - Se modifica la clase `RepositorioLibros` para que utilice el `RemoteDataSource` y la base de datos ROOM para obtener los libros.
+  - Se configura `Coil` para que utilice `OkHttpClient` con Retrofit2 en la carga de imágenes.
+  - Se añade el composable `CaratulaLibro` para mostrar la carátula del libro en la pantalla de detalle.
+  - Nueva ruta de navegación para la pantalla que permite añadir libros.
+  - Se crea en `utils` el objeto `Isbn` para validar el ISBN de los libros.
+  - Se añade la pantalla de añadir libro con validación de ISBN y control de errores.
+  
