@@ -6,7 +6,6 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 // ─── data/model/Libro.kt ─────────────────────────────────────────────────────────────────────────
-// La MISMA clase que en T4: no se añade ni una anotación nueva
 @Entity(
     tableName = "libros",
     indices = [
@@ -34,10 +33,17 @@ data class Libro(
     @ColumnInfo(name = "cover")           // "cover_i" (entero → se construye la URL)
     val cover: String? = null,
 
-    // Campos exclusivamente locales: no existen en la API de Open Library
+    // ─── Campos exclusivamente locales ──────────────────────────────────────
     @ColumnInfo(name = "es_favorito")
     val esFavorito: Boolean = false,
 
     @ColumnInfo(name = "leido")
-    val leido: Boolean = false
+    val leido: Boolean = false,
+
+    // ─── NUEVO en T6 ────────────────────────────────────────────────────────
+    // Instante (epoch en milisegundos) de la última comprobación contra la API.
+    // 0L significa "nunca sincronizado": es el valor de los libros recién dados
+    // de alta desde el formulario y el de los creados manualmente.
+    @ColumnInfo(name = "actualizado_en")
+    val actualizadoEn: Long = 0L
 )

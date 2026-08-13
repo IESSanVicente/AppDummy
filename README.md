@@ -75,4 +75,11 @@ composeBom = "2026.06.01"
   - Nueva ruta de navegación para la pantalla que permite añadir libros.
   - Se crea en `utils` el objeto `Isbn` para validar el ISBN de los libros.
   - Se añade la pantalla de añadir libro con validación de ISBN y control de errores.
-  
+- **v8.** Arquitectura offline-first
+  - Revisión de las dependencias y actualización de versiones en `libs.versions.toml`.
+  - Se añade el permiso `ACCESS_NETWORK_STATE` en el archivo `AndroidManifest.xml`.
+  - Se incrementa la versión de la base de datos ROOM a la versión 2 y se añade el campo `actualizadoEn` en la entidad `Libro`.
+  - Se modifica el DAO `LibrosDao` para añadir nuevos métodos y gestión del cambpo `actualizadoEn`.
+  - Actualización del `LocalDataSource` para gestionar el campo `actualizadoEn` y la nueva versión de la base de datos.
+  - Se añade la clase `ResultadoSincronizacion` para representar los posibles resultados de la sincronización de datos.
+  - Se actualiza `LibrosRepositorio` para gestionar la sincronización de datos entre la base de datos local y la API REST.

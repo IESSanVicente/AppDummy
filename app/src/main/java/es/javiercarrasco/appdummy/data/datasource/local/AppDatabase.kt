@@ -6,9 +6,9 @@ import es.javiercarrasco.appdummy.data.model.Libro
 
 // ─── data/datasource/local/AppDatabase.kt ────────────────────────────────────────────────────────
 @Database(
-    entities = [Libro::class],   // lista de todas las @Entity de la app
-    version = 1,                 // versión del esquema — incrementar al hacer cambios
-    exportSchema = true          // exportar esquema a /schemas para migraciones
+    entities = [Libro::class],
+    version = 2,                 // ← era 1 en T4: se ha añadido la columna actualizado_en
+    exportSchema = true
 )
 @TypeConverters(Converters::class)   // registrar los converters
 abstract class AppDatabase : RoomDatabase() {

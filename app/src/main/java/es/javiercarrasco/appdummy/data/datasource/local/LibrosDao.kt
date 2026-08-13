@@ -4,7 +4,7 @@ import androidx.room.*
 import es.javiercarrasco.appdummy.data.model.Libro
 import kotlinx.coroutines.flow.Flow
 
-// ─── data/datasource/local/LibrosDao.kt ──────────────────────────────────────────────────────────
+// ─── data/datasource/local/LibrosDao.kt — añadir/modificar ───────────────────────────────────────
 @Dao
 interface LibrosDao {
     // ─── Consultas reactivas (Flow, SIN suspend) ──────────────────────────────
@@ -55,28 +55,6 @@ interface LibrosDao {
     @Delete
     suspend fun eliminar(libro: Libro)
 
-    // @Query de escritura: permite actualizaciones selectivas de columnas concretas
-    // Solución al problema de esFavorito: actualiza solo los campos de la API
-    @Query(
-        """
-        UPDATE libros SET
-            titulo = :titulo,
-            autor = :autor,
-            year = :year,
-            isbn= :isbn,
-            cover = :cover
-        WHERE id = :id
-    """
-    )
-    suspend fun actualizarDesdeRed(
-        id: String,
-        titulo: String,
-        autor: String,
-        year: Int?,
-        isbn: String,
-        cover: String?
-    )
-
     // Toggle de favorito: invierte el valor booleano en la base de datos
     @Query("UPDATE libros SET es_favorito = NOT es_favorito WHERE id = :id")
     suspend fun toggleFavorito(id: String)
@@ -85,21 +63,68 @@ interface LibrosDao {
     @Query("UPDATE libros SET leido = NOT leido WHERE id = :id")
     suspend fun toggleLeido(id: String)
 
-    // @Transaction: garantiza que varias operaciones se ejecutan de forma atómica
-    // Si alguna falla, todas se revierten (rollback)
+    // ─── Sincronización (T6) ────────────────────────────────────────────────
+
+    // Devuelve los libros candidatos a refrescarse:
+    //   · deben tener ISBN (sin ISBN no se pueden localizar en Open Library)
+    //   · deben estar "caducados": comprobados antes del instante :anteriorA
+    // Se ordenan del más antiguo al más reciente y se limita la cantidad para no
+    // encadenar decenas de peticiones en una sola sincronización.
+    @Query("""
+        SELECT * FROM libros
+        WHERE isbn <> '' AND actualizado_en < :anteriorA
+        ORDER BY actualizado_en ASC
+        LIMIT :maximo
+    """)
+    suspend fun obtenerCaducados(anteriorA: Long, maximo: Int): List<Libro>
+
+    // Instante de la sincronización más reciente de toda la tabla.
+    // Devuelve null si la tabla está vacía (MAX() sobre cero filas es NULL).
+    @Query("SELECT MAX(actualizado_en) FROM libros")
+    fun observarUltimaSincronizacion(): Flow<Long?>
+
+    // MODIFICADO respecto a T4: se añade la columna actualizado_en.
+    // Sigue sin tocar es_favorito ni leido: son propiedad del usuario.
+    @Query("""
+        UPDATE libros SET
+            titulo = :titulo,
+            autor = :autor,
+            year = :year,
+            isbn = :isbn,
+            cover = :cover,
+            actualizado_en = :actualizadoEn
+        WHERE id = :id
+    """)
+    suspend fun actualizarDesdeRed(
+        id: String,
+        titulo: String,
+        autor: String,
+        year: Int?,
+        isbn: String,
+        cover: String?,
+        actualizadoEn: Long
+    )
+
+    // Marca un libro como comprobado sin modificar sus datos. Se usa cuando Open
+    // Library no devuelve resultados para ese ISBN: el libro se ha comprobado, así
+    // que no debe volver a pedirse en la siguiente sincronización.
+    @Query("UPDATE libros SET actualizado_en = :instante WHERE id = :id")
+    suspend fun marcarComprobado(id: String, instante: Long)
+
+    // MODIFICADO respecto a T4: propaga la marca de tiempo a la actualización
     @Transaction
-    suspend fun upsertConservandoFavorito(libros: List<Libro>) {
+    suspend fun upsertConservandoFavorito(libros: List<Libro>, instante: Long) {
         val resultados = insertarIgnorando(libros)
-        // Para cada libro que ya existía (resultado == -1L), actualizar solo los campos de la API
-        libros.forEachIndexed { index, libro ->
-            if (resultados[index] == -1L) {
+        libros.forEachIndexed { indice, libro ->
+            if (resultados[indice] == -1L) {
                 actualizarDesdeRed(
                     id = libro.id,
                     titulo = libro.titulo,
                     autor = libro.autor,
                     year = libro.year,
                     isbn = libro.isbn,
-                    cover = libro.cover
+                    cover = libro.cover,
+                    actualizadoEn = instante
                 )
             }
         }
