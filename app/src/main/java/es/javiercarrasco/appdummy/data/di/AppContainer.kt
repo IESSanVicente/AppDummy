@@ -6,12 +6,14 @@ import es.javiercarrasco.appdummy.data.datasource.local.LocalDataSource
 import es.javiercarrasco.appdummy.data.datasource.remote.RemoteDataSource
 import es.javiercarrasco.appdummy.data.datasource.remote.RetrofitClient
 import es.javiercarrasco.appdummy.data.repository.LibrosRepository
+import es.javiercarrasco.appdummy.utils.ObservadorConectividad
 import okhttp3.OkHttpClient
 
 // ─── data/di/AppContainer.kt ─────────────────────────────────────────────────────────────────────
 interface AppContainer {
     val librosRepository: LibrosRepository
     val okHttpClient: OkHttpClient   // se expone para compartirlo con Coil
+    val observadorConectividad: ObservadorConectividad   // ← NUEVO en T6
 }
 
 class DefaultAppContainer(context: Context) : AppContainer {
@@ -34,5 +36,12 @@ class DefaultAppContainer(context: Context) : AppContainer {
     // El repositorio pasa a recibir DOS orígenes de datos
     override val librosRepository: LibrosRepository by lazy {
         LibrosRepository(localDataSource, remoteDataSource)
+    }
+
+    // ─── Servicios del sistema (T6) ─────────────────────────────────────────
+    // Se usa applicationContext: el observador vive tanto como la aplicación, así
+    // que guardar el contexto de una Activity provocaría una fuga de memoria.
+    override val observadorConectividad: ObservadorConectividad by lazy {
+        ObservadorConectividad(context.applicationContext)
     }
 }

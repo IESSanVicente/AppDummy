@@ -83,3 +83,7 @@ composeBom = "2026.06.01"
   - Actualización del `LocalDataSource` para gestionar el campo `actualizadoEn` y la nueva versión de la base de datos.
   - Se añade la clase `ResultadoSincronizacion` para representar los posibles resultados de la sincronización de datos.
   - Se actualiza `LibrosRepositorio` para gestionar la sincronización de datos entre la base de datos local y la API REST.
+  - Modificación de la clase `LibrosViewModel` para añadir la función de sincronización de datos y el estado de sincronización.
+  - Se modifica la pantalla de listado de libros para mostrar el estado de sincronización y permitir al usuario lanzar la sincronización manualmente.
+  - Se añade a `utils` la clase `ObservadorConectividad` para observar los cambios en la conectividad de red.
+  - Se añade en `AppContainer` la observación de la conectividad de red y se lanza la sincronización de datos cuando se detecta que hay conexión a Internet.

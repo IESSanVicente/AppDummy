@@ -9,7 +9,7 @@ import coil3.request.crossfade
 import es.javiercarrasco.appdummy.data.di.AppContainer
 import es.javiercarrasco.appdummy.data.di.DefaultAppContainer
 
-// ─── AppDummyApplication.kt ──────────────────────────────────────────────────────────────────────
+// ─── AppDummyApplication.kt — sin cambios respecto a T5 ──────────────────────────────────────────
 class AppDummyApplication : Application(), SingletonImageLoader.Factory {
     lateinit var container: AppContainer
 
@@ -18,15 +18,15 @@ class AppDummyApplication : Application(), SingletonImageLoader.Factory {
         container = DefaultAppContainer(this)
     }
 
-    // SingletonImageLoader.Factory: Coil llama a este método para crear
-    // el ImageLoader singleton que usará AsyncImage en toda la app
     override fun newImageLoader(context: PlatformContext): ImageLoader =
         ImageLoader.Builder(context)
             .components {
-                // OkHttpNetworkFetcherFactory: usa el mismo OkHttpClient que Retrofit,
-                // de modo que ambos comparten pool de conexiones, timeouts y User-Agent
+                // Mismo OkHttpClient que Retrofit: un solo pool de conexiones, los
+                // mismos timeouts y la misma cabecera User-Agent (T5)
                 add(OkHttpNetworkFetcherFactory(callFactory = { container.okHttpClient }))
             }
-            .crossfade(true)   // animación de fundido al cargar las imágenes
+            // Coil crea por defecto una caché de memoria (un porcentaje de la RAM
+            // disponible) y otra de disco. No hace falta configurarlas a mano.
+            .crossfade(true)
             .build()
 }
