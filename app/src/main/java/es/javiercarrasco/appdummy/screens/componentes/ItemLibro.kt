@@ -39,6 +39,7 @@ fun ItemLibro(
             Text(libro.titulo, style = MaterialTheme.typography.titleSmall)
             CaratulaLibro(
                 coverUrl = libro.cover,
+                portadaLocal = libro.portadaLocal,   // ← T7
                 titulo = libro.titulo,
                 modifier = Modifier
                     .width(200.dp)

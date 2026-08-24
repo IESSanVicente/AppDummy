@@ -108,6 +108,7 @@ fun PantallaNuevoLibro(
                                 leadingContent = {
                                     CaratulaLibro(
                                         coverUrl = libro.cover,
+                                        portadaLocal = libro.portadaLocal,   // ← T7
                                         titulo = libro.titulo,
                                         modifier = Modifier.width(40.dp)
                                     )
@@ -148,6 +149,7 @@ fun PantallaNuevoLibro(
                 // Previsualización de la carátula obtenida de la Covers API
                 CaratulaLibro(
                     coverUrl = uiState.cover,
+                    portadaLocal = null,   // ← T7
                     titulo = uiState.titulo,
                     modifier = Modifier.width(90.dp)
                 )

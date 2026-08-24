@@ -93,3 +93,5 @@ composeBom = "2026.06.01"
   - Se añade el objeto `AlmacenPortadas` para gestionar el almacenamiento de las portadas de los libros en la memoria interna del dispositivo.
   - Se añade un nuevo atributo a la entidad `Libro` para almacenar la ruta de la portada del libro en la memoria interna.
   - Se añade el método `actualizarPortadaLocal` en el DAO `LibrosDao` para actualizar la ruta de la portada del libro en la base de datos y se actualizan el Datasource local y el repositorio para gestionar la portada local.
+  - Se amplia `DetalleViewModel` para gestionar la captura de fotos y el almacenamiento de las portadas en la memoria interna.
+  - Modificación del composable `CaratulaLibro` para mostrar la portada local si existe, y en caso contrario, mostrar la portada remota o la imagen por defecto.

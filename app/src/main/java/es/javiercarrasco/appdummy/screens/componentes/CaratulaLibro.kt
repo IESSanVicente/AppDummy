@@ -14,17 +14,24 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import es.javiercarrasco.appdummy.R
+import java.io.File
 
 @Composable
 fun CaratulaLibro(
     coverUrl: String?,
+    portadaLocal: String?,          // ← NUEVO en T7
     titulo: String,
     modifier: Modifier = Modifier
 ) {
+    // Prioridad: portada propia del usuario > portada de Open Library > nocover.jpg
+    val origen: Any? = portadaLocal?.let { File(it) } ?: coverUrl
+
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(coverUrl)            // si es null, Coil muestra directamente el error
+            .data(origen)
             .crossfade(true)
+            .memoryCacheKey(origen.toString())
+            .diskCacheKey(origen.toString())
             .build(),
         // placeholder: imagen mientras se descarga
         placeholder = painterResource(R.drawable.nocover),
