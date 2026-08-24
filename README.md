@@ -87,3 +87,7 @@ composeBom = "2026.06.01"
   - Se modifica la pantalla de listado de libros para mostrar el estado de sincronización y permitir al usuario lanzar la sincronización manualmente.
   - Se añade a `utils` la clase `ObservadorConectividad` para observar los cambios en la conectividad de red.
   - Se añade en `AppContainer` la observación de la conectividad de red y se lanza la sincronización de datos cuando se detecta que hay conexión a Internet.
+- **v9.** Multimedia y cámara
+  - Se añaden las dependencias necesarias de CameraX y Media3, y los permisos necesarios en el archivo `AndroidManifest.xml`.
+  - Se añade el composable `SolicitudPermiso` para solicitar permisos de cámara y almacenamiento.
+  - Se añade el objeto `AlmacenPortadas` para gestionar el almacenamiento de las portadas de los libros en la memoria interna del dispositivo.

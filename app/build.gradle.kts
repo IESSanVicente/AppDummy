@@ -104,4 +104,15 @@ dependencies {
 
     // Gson — deserialización de JSON a objetos Kotlin/Java (ya añadido en T4)
     implementation(libs.gson)
+
+    // CameraX — vista previa, captura de imagen y grabación de vídeo
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)     // implementación sobre Camera2
+    implementation(libs.androidx.camera.lifecycle)   // vinculación con el Lifecycle
+    implementation(libs.androidx.camera.view)        // PreviewView
+    implementation(libs.androidx.camera.video)       // VideoCapture (sección 9)
+
+    // Media3 — reproducción de vídeo
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)          // PlayerView
 }

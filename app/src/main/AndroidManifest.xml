@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Permiso normal (concedido automáticamente) -->
+    <!-- Permisos normales, concedidos automáticamente (T5 y T6) -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!-- Permisos peligrosos (requieren aprobación del usuario) -->
+    <!-- Permisos peligrosos: requieren aprobación explícita del usuario -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />   <!-- NUEVO en T7 -->
 
-    <!-- Características hardware -->
+    <!-- La cámara es una característica deseable, no obligatoria: required="false"
+     permite instalar la app en dispositivos sin cámara (algunas tablets). -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
