@@ -46,4 +46,8 @@ class LocalDataSource(private val dao: LibrosDao) {
             cover = datos.cover,
             actualizadoEn = instante
         )
+
+    // ─── Añadir a LocalDataSource (T7) ───────────────────────────────────────────
+    suspend fun actualizarPortadaLocal(id: String, ruta: String?) =
+        dao.actualizarPortadaLocal(id, ruta)
 }

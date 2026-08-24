@@ -40,10 +40,12 @@ data class Libro(
     @ColumnInfo(name = "leido")
     val leido: Boolean = false,
 
-    // ─── NUEVO en T6 ────────────────────────────────────────────────────────
-    // Instante (epoch en milisegundos) de la última comprobación contra la API.
-    // 0L significa "nunca sincronizado": es el valor de los libros recién dados
-    // de alta desde el formulario y el de los creados manualmente.
-    @ColumnInfo(name = "actualizado_en")
-    val actualizadoEn: Long = 0L
+    @ColumnInfo(name = "actualizado_en")    // T6
+    val actualizadoEn: Long = 0L,
+
+    // ─── NUEVO en T7 ─────────────────────────────────────────────────────
+    // Ruta absoluta del fichero de portada dentro de filesDir.
+    // null significa "este libro no tiene portada propia": se usará la de
+    // Open Library o, en su defecto, nocover.jpg.
+    @ColumnInfo(name = "portada_local") val portadaLocal: String? = null
 )

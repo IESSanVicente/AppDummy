@@ -127,4 +127,14 @@ class LibrosRepository(
         in 500..599 -> "Error del servidor de Open Library ($codigo)."
         else -> "Error HTTP $codigo"
     }
+
+    /**
+     * Registra la portada propia de un libro.
+     * El repositorio no sabe nada de cámaras ni de galerías: recibe una ruta
+     * de fichero ya resuelta. Es lo que mantiene la capa de datos independiente
+     * del framework multimedia.
+     */
+    suspend fun guardarPortadaLocal(libroId: String, ruta: String?) {
+        localDataSource.actualizarPortadaLocal(libroId, ruta)
+    }
 }

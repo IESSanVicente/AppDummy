@@ -129,4 +129,11 @@ interface LibrosDao {
             }
         }
     }
+
+    /**
+     * Guarda (o borra, si [ruta] es null) la ruta de la portada propia.
+     * Es una actualización selectiva: no toca ninguna otra columna.
+     */
+    @Query("UPDATE libros SET portada_local = :ruta WHERE id = :id")
+    suspend fun actualizarPortadaLocal(id: String, ruta: String?)
 }

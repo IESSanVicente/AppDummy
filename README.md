@@ -91,3 +91,5 @@ composeBom = "2026.06.01"
   - Se añaden las dependencias necesarias de CameraX y Media3, y los permisos necesarios en el archivo `AndroidManifest.xml`.
   - Se añade el composable `SolicitudPermiso` para solicitar permisos de cámara y almacenamiento.
   - Se añade el objeto `AlmacenPortadas` para gestionar el almacenamiento de las portadas de los libros en la memoria interna del dispositivo.
+  - Se añade un nuevo atributo a la entidad `Libro` para almacenar la ruta de la portada del libro en la memoria interna.
+  - Se añade el método `actualizarPortadaLocal` en el DAO `LibrosDao` para actualizar la ruta de la portada del libro en la base de datos y se actualizan el Datasource local y el repositorio para gestionar la portada local.
