@@ -95,3 +95,5 @@ composeBom = "2026.06.01"
   - Se añade el método `actualizarPortadaLocal` en el DAO `LibrosDao` para actualizar la ruta de la portada del libro en la base de datos y se actualizan el Datasource local y el repositorio para gestionar la portada local.
   - Se amplia `DetalleViewModel` para gestionar la captura de fotos y el almacenamiento de las portadas en la memoria interna.
   - Modificación del composable `CaratulaLibro` para mostrar la portada local si existe, y en caso contrario, mostrar la portada remota o la imagen por defecto.
+  - Se añade la pantalla para la cámara, `PantallaCamara`, que permite al usuario capturar una foto y guardarla como portada del libro.
+  - Se añade el composable `SelectorPortada` para permitir al usuario elegir una portada desde la galería o capturar una nueva foto.
