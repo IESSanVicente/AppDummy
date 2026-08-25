@@ -45,21 +45,20 @@ class DetalleViewModel(
      */
     fun asignarPortadaLocal(uri: Uri) {
         viewModelScope.launch {
-            val fichero = AlmacenPortadas.copiarDesdeUri(
-                context = getApplication(),
-                origen = uri,
-                libroId = libroId
-            )
+            val contexto = getApplication<Application>()
+            val fichero = AlmacenPortadas.copiarDesdeUri(contexto, uri, libroId)
             repository.guardarPortadaLocal(libroId, fichero?.absolutePath)
-            cargarDetalle()   // recarga el estado para que la pantalla se repinte
+            AlmacenPortadas.limpiarAnteriores(contexto, libroId, conservar = fichero)
+            cargarDetalle()
         }
     }
 
     /** Elimina la portada propia y vuelve a mostrar la de Open Library. */
     fun quitarPortadaLocal() {
         viewModelScope.launch {
-            AlmacenPortadas.borrar(getApplication(), libroId)
+            val contexto = getApplication<Application>()
             repository.guardarPortadaLocal(libroId, null)
+            AlmacenPortadas.limpiarAnteriores(contexto, libroId, conservar = null)
             cargarDetalle()
         }
     }

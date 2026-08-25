@@ -30,8 +30,8 @@ fun CaratulaLibro(
         model = ImageRequest.Builder(LocalContext.current)
             .data(origen)
             .crossfade(true)
-            .memoryCacheKey(origen.toString())
-            .diskCacheKey(origen.toString())
+//            .memoryCacheKey(origen.toString())
+//            .diskCacheKey(origen.toString())
             .build(),
         // placeholder: imagen mientras se descarga
         placeholder = painterResource(R.drawable.nocover),

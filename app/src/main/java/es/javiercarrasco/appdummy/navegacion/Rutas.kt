@@ -13,4 +13,10 @@ data class Detalle(val id: String)
 @Serializable
 data object Favoritos
 @Serializable
-data object NuevoLibro        // ← nueva ruta de T5
+data object NuevoLibro        // ← ruta de T5
+
+// ─── NUEVO en T7 ─────────────────────────────────────────────────────────────
+// La cámara necesita saber a qué libro pertenece la portada que va a capturar:
+// el id viaja como argumento tipado de la ruta (T3).
+@Serializable data class Camara(val libroId: String)
+@Serializable data object Reproductor      // audio y vídeo de muestra

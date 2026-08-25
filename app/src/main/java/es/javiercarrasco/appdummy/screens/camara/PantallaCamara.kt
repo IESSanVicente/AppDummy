@@ -140,7 +140,7 @@ private fun ContenidoCamara(
                     capturando = true
                     capturarFoto(
                         imageCapture = imageCapture,
-                        destino = AlmacenPortadas.ficheroPara(context, libroId),
+                        destino = AlmacenPortadas.nuevoFicheroPara(context, libroId),
                         context = context,
                         onExito = { uri -> capturando = false; onFotoCapturada(uri) },
                         onError = { capturando = false }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.SearchOff
@@ -22,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,6 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import es.javiercarrasco.appdummy.screens.componentes.CaratulaLibro
+import es.javiercarrasco.appdummy.screens.componentes.SelectorPortada
 
 // ─── screens/detalle/PantallaDetalle.kt ──────────────────────────────────────────────────────────
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +41,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun PantallaDetalle(
     libroId: String,
     onVolver: () -> Unit,
-    viewModel: DetalleViewModel = viewModel(factory = DetalleViewModel.factoryConId(libroId))
+    viewModel: DetalleViewModel = viewModel(factory = DetalleViewModel.factoryConId(libroId)),
+    onAbrirCamara: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -63,11 +68,29 @@ fun PantallaDetalle(
 
                 is DetalleUiState.Exito -> {
                     Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(24.dp),
+                        modifier = Modifier.fillMaxSize().padding(24.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
+                        CaratulaLibro(
+                            coverUrl = estado.libro.cover,
+                            portadaLocal = estado.libro.portadaLocal,   // ← T7
+                            titulo = estado.libro.titulo,
+                            modifier = Modifier.width(160.dp)
+                        )
+
+                        SelectorPortada(
+                            // El ViewModel se encarga de copiar y persistir: la UI solo pasa la Uri.
+                            onImagenElegida = { uri -> viewModel.asignarPortadaLocal(uri) },
+                            onAbrirCamara = { onAbrirCamara(estado.libro.id) }
+                        )
+
+                        // Solo tiene sentido ofrecer "quitar" si hay portada propia.
+                        if (estado.libro.portadaLocal != null) {
+                            TextButton(onClick = { viewModel.quitarPortadaLocal() }) {
+                                Text("Quitar portada propia")
+                            }
+                        }
+
                         Text(
                             text = estado.libro.titulo,
                             style = MaterialTheme.typography.headlineMedium

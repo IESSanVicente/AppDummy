@@ -97,3 +97,6 @@ composeBom = "2026.06.01"
   - Modificación del composable `CaratulaLibro` para mostrar la portada local si existe, y en caso contrario, mostrar la portada remota o la imagen por defecto.
   - Se añade la pantalla para la cámara, `PantallaCamara`, que permite al usuario capturar una foto y guardarla como portada del libro.
   - Se añade el composable `SelectorPortada` para permitir al usuario elegir una portada desde la galería o capturar una nueva foto.
+  - Se añaden las rutas de navegación para la pantalla de cámara y el selector de portada en `Rutas.kt`.
+  - Se añade la navegación a `AppNavigation` para manejar la pantalla de cámara y el selector de portada.
+  - Modificación de la pantalla de detalle para permitir al usuario cambiar la portada del libro y mostrar la portada local si existe.

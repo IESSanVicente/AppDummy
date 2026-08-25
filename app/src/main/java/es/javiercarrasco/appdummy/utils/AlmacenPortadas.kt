@@ -16,41 +16,42 @@ object AlmacenPortadas {
 
     private const val CARPETA = "portadas"
 
-    /**
-     * Devuelve el fichero destino de un libro. El identificador de Open Library
-     * tiene forma "/works/OL20933765W", así que se toma el último segmento para
-     * obtener un nombre de fichero válido.
-     */
-    fun ficheroPara(context: Context, libroId: String): File {
-        val carpeta = File(context.filesDir, CARPETA).apply { mkdirs() }
-        return File(carpeta, "${libroId.substringAfterLast('/')}.jpg")
+    private fun carpeta(context: Context): File =
+        File(context.filesDir, CARPETA).apply { mkdirs() }
+
+    private fun prefijo(libroId: String): String = libroId.substringAfterLast('/')
+
+    /** Devuelve un fichero NUEVO en cada llamada: el nombre lleva marca de tiempo. */
+    fun nuevoFicheroPara(context: Context, libroId: String): File =
+        File(carpeta(context), "${prefijo(libroId)}-${System.currentTimeMillis()}.jpg")
+
+    /** Borra las portadas anteriores del libro, conservando la indicada. */
+    fun limpiarAnteriores(context: Context, libroId: String, conservar: File? = null) {
+        carpeta(context).listFiles()
+            ?.filter { it.name.startsWith("${prefijo(libroId)}-") && it != conservar }
+            ?.forEach { it.delete() }
     }
 
-    /**
-     * Copia el contenido de [origen] al fichero privado del libro.
-     *
-     * Es imprescindible copiar y no limitarse a guardar la Uri: las Uri que
-     * devuelve el selector de medios conceden un permiso de lectura **temporal**
-     * que se pierde al reiniciar el dispositivo. Si se persistiera la Uri en
-     * Room, la portada dejaría de verse en la siguiente sesión.
-     *
-     * @return el fichero creado, o null si la copia falla.
-     */
     suspend fun copiarDesdeUri(
         context: Context,
         origen: Uri,
         libroId: String
-    ): File? = withContext(Dispatchers.IO) {   // E/S de disco fuera del hilo principal
+    ): File? = withContext(Dispatchers.IO) {
         runCatching {
-            val destino = ficheroPara(context, libroId)
+            // Viene de la cámara: el fichero ya está escrito en nuestra carpeta.
+            if (origen.scheme == "file") {
+                val yaEsNuestro = origen.path?.let { File(it) }
+                if (yaEsNuestro != null &&
+                    yaEsNuestro.parentFile == carpeta(context) &&
+                    yaEsNuestro.length() > 0
+                ) return@runCatching yaEsNuestro
+            }
+
+            val destino = nuevoFicheroPara(context, libroId)
             context.contentResolver.openInputStream(origen)?.use { entrada ->
                 destino.outputStream().use { salida -> entrada.copyTo(salida) }
             } ?: return@runCatching null
             destino
         }.getOrNull()
     }
-
-    /** Elimina la portada local de un libro, si existe. */
-    fun borrar(context: Context, libroId: String): Boolean =
-        ficheroPara(context, libroId).let { if (it.exists()) it.delete() else false }
 }
