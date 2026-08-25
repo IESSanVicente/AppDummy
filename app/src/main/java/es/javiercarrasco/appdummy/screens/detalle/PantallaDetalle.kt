@@ -6,10 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.SearchOff
@@ -31,9 +35,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import es.javiercarrasco.appdummy.R
 import es.javiercarrasco.appdummy.screens.componentes.CaratulaLibro
 import es.javiercarrasco.appdummy.screens.componentes.SelectorPortada
+import es.javiercarrasco.appdummy.screens.reproductor.ReproductorAudio
 
 // ─── screens/detalle/PantallaDetalle.kt ──────────────────────────────────────────────────────────
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,14 +66,19 @@ fun PantallaDetalle(
             )
         }
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(padding)) {
             when (val estado = uiState) {
                 is DetalleUiState.Cargando ->
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
 
                 is DetalleUiState.Exito -> {
                     Column(
-                        modifier = Modifier.fillMaxSize().padding(24.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp)
+                            .verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         CaratulaLibro(
@@ -91,6 +101,11 @@ fun PantallaDetalle(
                                 Text("Quitar portada propia")
                             }
                         }
+
+                        ReproductorAudio(
+                            recurso = R.raw.muestra,
+                            modifier = Modifier.wrapContentSize()
+                        )
 
                         Text(
                             text = estado.libro.titulo,
@@ -116,7 +131,9 @@ fun PantallaDetalle(
 
                 is DetalleUiState.NoEncontrado -> {
                     Column(
-                        modifier = Modifier.fillMaxSize().padding(32.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(32.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
