@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+// ─── screens/reproductor/ReproductorAudio.kt ─────────────────────────────────────────────────────
+
 @Composable
 fun ReproductorAudio(
     @RawRes recurso: Int,

@@ -100,4 +100,5 @@ composeBom = "2026.06.01"
   - Se añaden las rutas de navegación para la pantalla de cámara y el selector de portada en `Rutas.kt`.
   - Se añade la navegación a `AppNavigation` para manejar la pantalla de cámara y el selector de portada.
   - Modificación de la pantalla de detalle para permitir al usuario cambiar la portada del libro y mostrar la portada local si existe.
-  - Se añade la pantalla para el reproductor de audio, `ReproductorAudio`, que permite al usuario reproducir un audiolibro, junto con su ViewModel.
+  - Se añade el componente para el reproductor de audio, `ReproductorAudio`, que permite al usuario reproducir un audiolibro, junto con su ViewModel.
+  - Se añade el componente para el reproductor de video, `ReproductorVideo`, que permite al usuario reproducir un video, junto con su ViewModel.

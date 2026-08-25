@@ -39,6 +39,7 @@ import es.javiercarrasco.appdummy.R
 import es.javiercarrasco.appdummy.screens.componentes.CaratulaLibro
 import es.javiercarrasco.appdummy.screens.componentes.SelectorPortada
 import es.javiercarrasco.appdummy.screens.reproductor.ReproductorAudio
+import es.javiercarrasco.appdummy.screens.reproductor.ReproductorVideo
 
 // ─── screens/detalle/PantallaDetalle.kt ──────────────────────────────────────────────────────────
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,6 +106,13 @@ fun PantallaDetalle(
                         ReproductorAudio(
                             recurso = R.raw.muestra,
                             modifier = Modifier.wrapContentSize()
+                        )
+
+                        ReproductorVideo(
+                            urlVideo = "https://test-videos.co.uk/vids/bigbuckbunny/mp4/av1/360/Big_Buck_Bunny_360_10s_1MB.mp4",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
                         )
 
                         Text(
