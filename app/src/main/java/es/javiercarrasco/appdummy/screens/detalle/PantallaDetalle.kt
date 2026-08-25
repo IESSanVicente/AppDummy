@@ -40,8 +40,8 @@ import es.javiercarrasco.appdummy.screens.componentes.SelectorPortada
 @Composable
 fun PantallaDetalle(
     libroId: String,
+    viewModel: DetalleViewModel,          // ← MODIFICADO: ya no se crea por defecto aquí
     onVolver: () -> Unit,
-    viewModel: DetalleViewModel = viewModel(factory = DetalleViewModel.factoryConId(libroId)),
     onAbrirCamara: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -81,6 +81,7 @@ fun PantallaDetalle(
                         SelectorPortada(
                             // El ViewModel se encarga de copiar y persistir: la UI solo pasa la Uri.
                             onImagenElegida = { uri -> viewModel.asignarPortadaLocal(uri) },
+                            // Aquí no hay Uri todavía: solo se abre la pantalla de cámara.
                             onAbrirCamara = { onAbrirCamara(estado.libro.id) }
                         )
 

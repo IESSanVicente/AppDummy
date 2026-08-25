@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.File
 
 // ─── screens/detalle/DetalleViewModel.kt ─────────────────────────────────────────────────────────
 class DetalleViewModel(
@@ -38,10 +39,7 @@ class DetalleViewModel(
     }
 
     /**
-     * Recibe la Uri de una imagen (venga de la cámara o del selector de medios),
-     * la copia al almacenamiento privado y persiste la ruta resultante.
-     *
-     * La UI solo entrega una Uri: no sabe dónde acaba el fichero ni cómo se guarda.
+     * Origen: selector de medios. La Uri es ajena y temporal, hay que copiarla.
      */
     fun asignarPortadaLocal(uri: Uri) {
         viewModelScope.launch {
@@ -53,7 +51,27 @@ class DetalleViewModel(
         }
     }
 
-    /** Elimina la portada propia y vuelve a mostrar la de Open Library. */
+    /**
+     * Origen: cámara. CameraX ya ha escrito el JPEG en su destino definitivo,
+     * así que copiarlo sería duplicar trabajo: basta con registrar su ruta.
+     */
+    fun asignarPortadaCapturada(uri: Uri) {
+        viewModelScope.launch {
+            val contexto = getApplication<Application>()
+            // Uri.fromFile() conserva la ruta absoluta en uri.path.
+            val fichero = uri.path?.let { File(it) }
+
+            if (fichero != null && fichero.exists() && fichero.length() > 0) {
+                repository.guardarPortadaLocal(libroId, fichero.absolutePath)
+                AlmacenPortadas.limpiarAnteriores(contexto, libroId, conservar = fichero)
+            }
+            cargarDetalle()
+        }
+    }
+
+    /**
+     * Quitar la portada propia: se olvida la ruta y se borran todos los ficheros del libro.
+     */
     fun quitarPortadaLocal() {
         viewModelScope.launch {
             val contexto = getApplication<Application>()

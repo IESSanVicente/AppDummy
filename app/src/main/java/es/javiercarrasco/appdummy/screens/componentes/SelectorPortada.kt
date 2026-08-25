@@ -4,32 +4,36 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Photo
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 // ─── screens/componentes/SelectorPortada.kt ──────────────────────────────────────────────────────
+
+/**
+ * Ofrece las dos vías para conseguir una portada propia.
+ *
+ * @param onImagenElegida se invoca con la Uri devuelta por el selector del sistema.
+ * @param onAbrirCamara se invoca al pulsar "Hacer foto"; solo dispara la navegación,
+ *                      porque en ese instante todavía no existe ninguna imagen.
+ */
 @Composable
 fun SelectorPortada(
     onImagenElegida: (Uri) -> Unit,
     onAbrirCamara: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // PickVisualMedia abre el selector del sistema y devuelve una Uri,
-    // o null si el usuario cancela sin elegir nada.
     val lanzador = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
-    ) { uri -> uri?.let(onImagenElegida) }
+    ) { uri ->
+        // uri es null si el usuario cierra el selector sin elegir nada.
+        uri?.let(onImagenElegida)
+    }
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -37,19 +41,19 @@ fun SelectorPortada(
     ) {
         OutlinedButton(onClick = onAbrirCamara) {
             Icon(Icons.Default.CameraAlt, contentDescription = null)
-            Spacer(Modifier.width(4.dp))
+            Spacer(Modifier.width(8.dp))
             Text("Hacer foto")
         }
 
-        OutlinedButton(onClick = {
-            lanzador.launch(
-                // ImageOnly filtra el selector para que no muestre vídeos.
-                // Otras opciones: VideoOnly e ImageAndVideo.
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
-        }) {
+        OutlinedButton(
+            onClick = {
+                lanzador.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
+            }
+        ) {
             Icon(Icons.Default.Photo, contentDescription = null)
-            Spacer(Modifier.width(4.dp))
+            Spacer(Modifier.width(8.dp))
             Text("Galería")
         }
     }

@@ -1,6 +1,7 @@
 package es.javiercarrasco.appdummy.screens.camara
 
 import android.Manifest
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.ViewGroup
@@ -174,25 +175,23 @@ private fun ContenidoCamara(
 private fun capturarFoto(
     imageCapture: ImageCapture,
     destino: File,
-    context: android.content.Context,
+    context: Context,
     onExito: (Uri) -> Unit,
     onError: () -> Unit
 ) {
-    // OutputFileOptions describe el destino. Existen tres variantes:
-    // fichero, MediaStore y flujo en memoria (OutputStream).
+    // OutputFileOptions decide el destino. Con un File, la imagen se escribe
+    // en almacenamiento privado y no se registra en la galería del sistema.
     val opciones = ImageCapture.OutputFileOptions.Builder(destino).build()
 
     imageCapture.takePicture(
         opciones,
-        // El Executor determina en qué hilo se invocan los callbacks.
-        // getMainExecutor garantiza que se actualiza el estado de Compose
-        // desde el hilo principal.
+        // El callback se ejecutará en el hilo principal: podemos tocar el estado de Compose.
         ContextCompat.getMainExecutor(context),
         object : ImageCapture.OnImageSavedCallback {
 
             override fun onImageSaved(resultado: ImageCapture.OutputFileResults) {
-                // Con destino de tipo File, savedUri puede ser null: se
-                // construye la Uri a partir del propio fichero.
+                // savedUri solo tiene valor cuando la salida es MediaStore.
+                // Al escribir en un File, viene a null y construimos la Uri nosotros.
                 onExito(resultado.savedUri ?: Uri.fromFile(destino))
             }
 

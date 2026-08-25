@@ -21,7 +21,7 @@ import es.javiercarrasco.appdummy.screens.favoritos.PantallaFavoritos
 import es.javiercarrasco.appdummy.screens.listado.PantallaListado
 import es.javiercarrasco.appdummy.screens.nuevo.PantallaNuevoLibro
 
-// Constante para la clave del resultado de la portada capturada en la pantalla de cámara.
+/** Clave del resultado que la pantalla de cámara deja para la de detalle. */
 private const val CLAVE_PORTADA = "portadaCapturada"
 
 // ─── navegacion/AppNavigation.kt ─────────────────────────────────────────────────────────────────
@@ -59,29 +59,29 @@ fun AppNavigation(
             composable<Detalle> { backStackEntry ->
                 val ruta: Detalle = backStackEntry.toRoute<Detalle>()
 
-                // Recupera la Uri de la portada capturada desde la pantalla de cámara, si existe.
+                // El ViewModel se crea aquí, y no como parámetro por defecto de
+                // PantallaDetalle, porque el efecto de más abajo necesita invocarlo.
+                val viewModel: DetalleViewModel = viewModel(factory = DetalleViewModel.factoryConId(ruta.id))
+
+                // El resultado que dejó PantallaCamara, si lo hay.
                 val uriCapturada by backStackEntry.savedStateHandle
                     .getStateFlow<Uri?>(CLAVE_PORTADA, null)
                     .collectAsStateWithLifecycle()
 
-                if (uriCapturada != null) {
-                    val viewModel: DetalleViewModel = viewModel(factory = DetalleViewModel.factoryConId(ruta.id))
-
-                    // Si hay una Uri capturada, se asigna como portada local y se consume el resultado.
-                    LaunchedEffect(uriCapturada) {
-                        uriCapturada?.let { uri ->
-                            viewModel.asignarPortadaLocal(uri)              // ← misma función que la galería
-                            backStackEntry.savedStateHandle[CLAVE_PORTADA] = null   // consumir el resultado
-                        }
+                LaunchedEffect(uriCapturada) {
+                    uriCapturada?.let { uri ->
+                        viewModel.asignarPortadaCapturada(uri)
+                        // Consumir el resultado: sin esto se volvería a aplicar en cada
+                        // recomposición o al girar el dispositivo.
+                        backStackEntry.savedStateHandle[CLAVE_PORTADA] = null
                     }
                 }
 
                 PantallaDetalle(
                     libroId = ruta.id,
+                    viewModel = viewModel,
                     onVolver = { navController.navigateUp() },
-                    onAbrirCamara = { libroId ->
-                        navController.navigate(Camara(libroId = libroId))   // ← T7 Navega a la pantalla de cámara, pasando el id del libro
-                    }
+                    onAbrirCamara = { libroId -> navController.navigate(Camara(libroId = libroId)) }
                 )
             }
 
@@ -98,11 +98,11 @@ fun AppNavigation(
                 PantallaCamara(
                     libroId = ruta.libroId,
                     onFotoCapturada = { uri ->
-                        // Cuando se captura una foto, se guarda la Uri en el savedStateHandle
-                        // de la entrada anterior del back stack (PantallaDetalle).
+                        // La foto ya está escrita. Dejamos su Uri en la entrada anterior
+                        // de la pila —la de Detalle— y volvemos.
                         navController.previousBackStackEntry
-                            ?.savedStateHandle?.set(CLAVE_PORTADA, uri)   // ← la Uri viaja
-
+                            ?.savedStateHandle
+                            ?.set(CLAVE_PORTADA, uri)
                         navController.navigateUp()
                     },
                     onVolver = { navController.navigateUp() }
